@@ -1,0 +1,264 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #e9e2cb;
+  --surface: #ded1a9;
+  --surface-2: #d3c497;
+  --ink: #221f19;
+  --ink-soft: #5a5140;
+  --rail: #23422f;
+  --signal: #a5342b;
+  --brass: #9c7a2a;
+  --hero-bg: #1c3526;
+  --hero-ink: #efe7d0;
+  --hero-brass: #c7a85a;
+  --line: #8a7a52;
+  --font-noto-sans-tc: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  --font-noto-serif-tc: "Noto Serif TC", "PMingLiU", serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12201a;
+    --surface: #1a2b21;
+    --surface-2: #203428;
+    --ink: #ece4cd;
+    --ink-soft: #a3ac9d;
+    --rail: #7fb98a;
+    --signal: #e2695c;
+    --brass: #d8b65b;
+    --hero-bg: #0e1a14;
+    --hero-ink: #efe7d0;
+    --hero-brass: #d8b65b;
+    --line: #3d4b3f;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #12201a;
+  --surface: #1a2b21;
+  --surface-2: #203428;
+  --ink: #ece4cd;
+  --ink-soft: #a3ac9d;
+  --rail: #7fb98a;
+  --signal: #e2695c;
+  --brass: #d8b65b;
+  --hero-bg: #0e1a14;
+  --hero-ink: #efe7d0;
+  --hero-brass: #d8b65b;
+  --line: #3d4b3f;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-rail: var(--rail);
+  --color-signal: var(--signal);
+  --color-brass: var(--brass);
+  --color-line: var(--line);
+  --color-hero-bg: var(--hero-bg);
+  --color-hero-ink: var(--hero-ink);
+  --color-hero-brass: var(--hero-brass);
+  --color-surface-2: var(--surface-2);
+  --font-sans-tc: var(--font-noto-sans-tc);
+  --font-serif-tc: var(--font-noto-serif-tc);
+  --font-slab: var(--font-zilla-slab);
+  --font-mono-ticket: var(--font-space-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-noto-serif-tc);
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+/* dashed ticket-style divider with punched holes on each end */
+.ticket-divider {
+  position: relative;
+  height: 1px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--line) 0 8px,
+    transparent 8px 14px
+  );
+}
+.ticket-divider::before,
+.ticket-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 13px;
+  height: 13px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  transform: translateY(-50%);
+}
+.ticket-divider::before {
+  left: -6.5px;
+}
+.ticket-divider::after {
+  right: -6.5px;
+}
+
+/* luggage tag (branch excursion card) */
+.tag {
+  position: relative;
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+}
+.tag::after {
+  content: "";
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  border: 1.5px solid var(--ink-soft);
+  background: var(--bg);
+}
+.tag.tag-odd {
+  transform: rotate(-0.6deg);
+}
+.tag.tag-even {
+  transform: rotate(0.6deg);
+}
+
+/* stations timeline connector */
+.station {
+  position: relative;
+  padding-bottom: 30px;
+}
+.station:last-child {
+  padding-bottom: 0;
+}
+.station::before {
+  content: "";
+  position: absolute;
+  left: 27px;
+  top: 56px;
+  bottom: 0;
+  width: 1px;
+  background: var(--line);
+}
+.station:last-child::before {
+  display: none;
+}
+@media (max-width: 640px) {
+  .station::before {
+    left: 21px;
+    top: 44px;
+  }
+}
+
+/* scroll-triggered fade-up reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 0.8, 0.24, 1),
+    transform 0.7s cubic-bezier(0.16, 0.8, 0.24, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* hero entrance, plays once on load */
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.hero-in {
+  animation: hero-in 0.9s cubic-bezier(0.16, 0.8, 0.24, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .hero-in {
+    animation: none;
+  }
+}
+
+/* lottery modal */
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.modal-in {
+  animation: modal-in 0.25s cubic-bezier(0.16, 0.8, 0.24, 1) both;
+}
+
+.lottery-ticket {
+  position: relative;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+}
+.lottery-ticket::before,
+.lottery-ticket::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  background: var(--bg);
+  border: 1px dashed var(--line);
+  border-radius: 999px;
+  transform: translateY(-50%);
+}
+.lottery-ticket::before {
+  left: -9px;
+}
+.lottery-ticket::after {
+  right: -9px;
+}
+
+@keyframes lottery-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.lottery-spin {
+  animation: lottery-spin 0.8s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-in {
+    animation: none;
+  }
+  .lottery-spin {
+    animation: none;
+  }
+}
