@@ -6,14 +6,14 @@ import WelcomeBanner from "./components/WelcomeBanner";
 const wonders = [
   {
     no: "01",
-    name: "日出",
+    name: "阿里山日出",
     en: "Sunrise",
     img: "/images/chiayi-01-alishan-sunrise.jpg",
     desc: "祝山觀日平台看金光刺破山稜，是多數人上山的第一個理由，記得提前預約小火車或接駁車席位。",
   },
   {
     no: "02",
-    name: "雲海",
+    name: "阿里山雲海",
     en: "Sea of Clouds",
     img: "/images/chiayi-02-alishan-sea-of-clouds.jpg",
     desc: "午後雲層自山谷湧起，將群峰化為海上孤島，對高岳、玉山方向是最佳的觀海角度。",
